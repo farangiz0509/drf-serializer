@@ -33,3 +33,18 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Welcome to Core project!")
+
+urlpatterns = [
+    path('', home),  # <-- this fixes the 404 at /
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+]
